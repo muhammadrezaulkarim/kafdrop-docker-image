@@ -9,3 +9,36 @@
     - 'LISTEN=9010'
     networks:
       - streaming
+      
+  kafka:
+    image: confluentinc/cp-kafka:4.0.0
+    hostname: kafka
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_RESERVED_BROKER_MAX_ID=999999999
+      - KAFKA_LOG_CLEANUP_POLICY=compact
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_NUM_PARTITIONS=1
+    networks:
+      - streaming
+    deploy:
+       placement:
+         constraints:
+           - 'node.role == manager'
+           - 'node.platform.os == linux'
+           
+  zookeeper:
+    image: confluentinc/cp-zookeeper:4.0.0
+    hostname: zookeeper
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+    networks:
+      - streaming
+    deploy:
+       placement:
+         constraints:
+           - 'node.role == manager'
+           - 'node.platform.os == linux'
