@@ -1,0 +1,11 @@
+  version: '3.2'
+  
+  kafdrop:
+    image: mrkcse/kafdrop-docker-image:latest
+    ports:
+    - '9010:9010'
+    environment:
+    - 'ZK_HOSTS=zookeeper:2181'
+    - 'LISTEN=9010'
+    networks:
+      - streaming
